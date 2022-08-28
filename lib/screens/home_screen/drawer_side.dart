@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:food_del/auth/sign_in.dart';
 import 'package:food_del/config/colors.dart';
 import 'package:food_del/screens/home_screen/home_screen.dart';
 import 'package:food_del/screens/home_screen/my_profile/my_profile.dart';
 import 'package:food_del/screens/home_screen/review_cart/review_cart.dart';
+import 'package:food_del/screens/home_screen/wish_list/wish_list.dart';
 
 class DrawerSide extends StatelessWidget {
   // const DrawerSide({Key? key}) : super(key: key);
@@ -61,7 +64,13 @@ class DrawerSide extends StatelessWidget {
                       Container(
                           height: 30,
                           child: MaterialButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => SignIn(),
+                                ),
+                              );
+                            },
                             child: Text('Login'),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
@@ -102,8 +111,24 @@ class DrawerSide extends StatelessWidget {
                 }),
             listTile(icon: Icons.notifications_outlined, title: "Notification"),
             listTile(icon: Icons.star_outlined, title: "Rating"),
-            listTile(icon: Icons.favorite_outlined, title: "Wishlist"),
+            listTile(
+                icon: Icons.favorite_outlined,
+                title: "Wishlist",
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => WishList()));
+                }),
             listTile(icon: Icons.format_quote_outlined, title: "FAQ"),
+            listTile(
+                icon: Icons.logout_rounded,
+                title: "Log Out",
+                onPressed: () async {
+                  //to signout from firebase
+                  final FirebaseAuth auth = FirebaseAuth.instance;
+                  await auth.signOut();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => SignIn()));
+                }),
 
             // footer starts
             Container(

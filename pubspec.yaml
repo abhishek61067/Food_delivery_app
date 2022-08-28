@@ -40,6 +40,11 @@ dependencies:
   firebase_core : ^1.10.0
   cloud_firestore: ^3.4.5
   provider: ^6.0.3
+  khalti_flutter: ^2.1.0
+  fluttertoast: ^8.0.9
+  location:
+  google_maps_flutter:
+
 
 
 

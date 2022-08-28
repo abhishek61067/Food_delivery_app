@@ -1,15 +1,19 @@
 //model refer to table.
 
 class ProductModel {
-  String productName;
-  String productImage;
-  int productPrice;
+  String? productName;
+  String? productImage;
+  int? productPrice;
+  String? productId;
+  int? productQuantity;
 
   //constructor
   ProductModel(
-      {required this.productImage,
-      required this.productName,
-      required this.productPrice});
+      {this.productImage,
+      this.productName,
+      this.productPrice,
+      this.productId,
+      this.productQuantity});
 }
 
 // for state management, we will use provider

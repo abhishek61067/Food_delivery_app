@@ -1,14 +1,36 @@
+//the list of items in search list are being get from product_provider.dart.
+
 import 'package:flutter/material.dart';
 import 'package:food_del/config/colors.dart';
+import 'package:food_del/models/product_model.dart';
+import 'package:food_del/screens/home_screen/single_product.dart';
 // import 'package:food_app/widgets/single_item.dart';
 import 'package:food_del/widgets/single_item.dart';
 
-class Search extends StatelessWidget {
-  const Search({Key? key}) : super(key: key);
+class Search extends StatefulWidget {
+  // const Search({Key? key}) : super(key: key);
+
+  List<ProductModel> search;
+  Search({this.search = const []});
 
   @override
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  String query = "";
+  @override
+
+  //For searching element in search bar
+  searchItem(String query) {
+    List<ProductModel> searchFood = widget.search.where((element) {
+      return element.productName.toString().toLowerCase().contains(query);
+    }).toList();
+    return searchFood;
+  }
+
   Widget build(BuildContext context) {
-    // List<ProductModel> _SingleItem = SingleItem(query);
+    List<ProductModel> _searchItem = searchItem(query);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
@@ -28,6 +50,12 @@ class Search extends StatelessWidget {
           height: 52,
           margin: EdgeInsets.symmetric(horizontal: 20),
           child: TextField(
+            onChanged: (value) {
+              // print(value);
+              setState(() {
+                query = value;
+              });
+            },
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -43,11 +71,15 @@ class Search extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        SingleItem(isBool: false),
-        SingleItem(isBool: false),
-        SingleItem(isBool: false),
-        SingleItem(isBool: false),
-        SingleItem(isBool: false),
+        Column(
+            children: _searchItem.map<Widget>((data) {
+          return SingleItem(
+            isBool: false,
+            productImage: data.productImage,
+            productName: data.productName,
+            productPrice: data.productPrice,
+          );
+        }).toList()),
       ]),
     );
   }

@@ -1,6 +1,12 @@
+//ProductOverview is invoked when item is clicked in home_screen.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import "package:flutter/material.dart";
 import "package:food_del/config/colors.dart";
+import 'package:food_del/providers/wishlist_provider.dart';
 import "package:food_del/screens/home_screen/home_screen.dart";
+import 'package:provider/provider.dart';
 
 enum SigninCharacter { fill, outline }
 
@@ -9,8 +15,15 @@ class ProductOverview extends StatefulWidget {
 
   String? productName;
   String? productImage;
-  int? productPrice;
-  ProductOverview({this.productName, this.productImage, this.productPrice});
+  String? productPrice;
+  String? productId;
+  // String? productId;
+  ProductOverview({
+    this.productName,
+    this.productImage,
+    this.productPrice,
+    this.productId,
+  });
 
   @override
   State<ProductOverview> createState() => _ProductOverviewState();
@@ -26,51 +39,87 @@ class _ProductOverviewState extends State<ProductOverview> {
     Color? color,
     String? title,
     IconData? iconData,
+    VoidCallback? onTap,
   }) {
     return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        color: backgroundColor,
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Icon(
-            iconData,
-            size: 17,
-            color: iconColor,
-          ),
-          SizedBox(width: 5),
-          Text(
-            title.toString(),
-            style: TextStyle(color: color),
-          ),
-        ]),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          color: backgroundColor,
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(
+              iconData,
+              size: 17,
+              color: iconColor,
+            ),
+            SizedBox(width: 5),
+            Text(
+              title.toString(),
+              style: TextStyle(color: color),
+            ),
+          ]),
+        ),
       ),
     );
   }
 
+  bool wishListBool = false;
+
+  getWishListBool() {
+    FirebaseFirestore.instance
+        .collection("WishList")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .collection("YourWishList")
+        .doc(widget.productId)
+        .get()
+        .then((value) => {
+              if (this.mounted)
+                {
+                  setState(() {
+                    wishListBool = value.get("wishList");
+                  }),
+                }
+            });
+  }
+
   @override
   Widget build(BuildContext context) {
+    getWishListBool();
+    WishListProvider wishListProvider = Provider.of(context);
     return Scaffold(
       bottomNavigationBar: Row(
         children: [
           bottomNavigationBar(
-              iconColor: Colors.grey,
-              backgroundColor: textColor,
-              color: Colors.white70,
-              title: "Add to wishlist",
-              iconData: Icons.favorite_outline),
+            onTap: () {
+              setState(() {
+                wishListBool = !wishListBool;
+              });
+              if (wishListBool == true) {
+                wishListProvider.addWishListData(
+                  wishListId: widget.productId.toString(),
+                  wishListImage: widget.productImage,
+                  wishListName: widget.productName,
+                  wishListPrice: int.parse(widget.productPrice.toString()),
+                  wishListQuantity: 2,
+                );
+              } else {
+                wishListProvider.deleteWishList(widget.productId);
+              }
+            },
+            iconColor: Colors.grey,
+            backgroundColor: textColor,
+            color: Colors.white70,
+            title: "Add to wishlist",
+            iconData:
+                wishListBool == false ? Icons.favorite_outline : Icons.favorite,
+          ),
           bottomNavigationBar(
               iconColor: Colors.white70,
               backgroundColor: primaryColor,
               color: textColor,
               title: "Go to cart",
               iconData: Icons.shop_outlined),
-          // bottomNavigationBar(
-          //   backgroundColor: textColor,
-          //   color: Colors.white70,
-          //   iconColor: Colors.grey,
-          //   title: "Add To Wishlist",
-          //   iconData: Icons.favourite_outline,
-          // ),
         ],
       ),
       appBar: AppBar(

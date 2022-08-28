@@ -3,6 +3,7 @@ import 'package:food_del/providers/product_provider.dart';
 import "package:food_del/screens/home_screen/drawer_side.dart";
 import "package:food_del/config/colors.dart";
 import 'package:food_del/screens/home_screen/product_overview/product_overview.dart';
+import 'package:food_del/screens/home_screen/review_cart/review_cart.dart';
 import "package:food_del/screens/home_screen/single_product.dart";
 import "package:food_del/screens/home_screen/search/search.dart";
 import 'package:provider/provider.dart';
@@ -44,11 +45,22 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('Herbs Seasoning'),
-            Text('View all',
-                style: TextStyle(
-                  color: Colors.grey,
-                )),
+            Text('Fresh Vegetables'),
+            //GestureDetector is class or an alternative for buttons that has onTap property.
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Search(search: productProvider.getHerbsProductDataList),
+                  ),
+                );
+              },
+              child: Text('View all',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  )),
+            ),
           ]),
         ),
         SingleChildScrollView(
@@ -63,7 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context) => ProductOverview(
                           productName: herbsProductData.productName,
                           productImage: herbsProductData.productImage,
-                          productPrice: herbsProductData.productPrice,
+                          productPrice:
+                              herbsProductData.productPrice.toString(),
+                          productId: herbsProductData.productId,
+                          // productId: herbsProductData.productId,
                         ),
                       ),
                     );
@@ -71,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   productImage: herbsProductData.productImage,
                   productName: herbsProductData.productName,
                   productPrice: herbsProductData.productPrice,
+                  productId: herbsProductData.productId,
                 );
               },
             ).toList(),
@@ -88,10 +104,20 @@ class _HomeScreenState extends State<HomeScreen> {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Text('Fresh Fruits'),
-          Text('View all',
-              style: TextStyle(
-                color: Colors.grey,
-              )),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Search(search: productProvider.getFreshProductDataList),
+                ),
+              );
+            },
+            child: Text('View all',
+                style: TextStyle(
+                  color: Colors.grey,
+                )),
+          ),
         ]),
       ),
       SingleChildScrollView(
@@ -106,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context) => ProductOverview(
                         productName: freshProductData.productName,
                         productImage: freshProductData.productImage,
-                        productPrice: freshProductData.productPrice,
+                        productPrice: freshProductData.productPrice.toString(),
+                        productId: freshProductData.productId,
                       ),
                     ),
                   );
@@ -114,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 productImage: freshProductData.productImage,
                 productName: freshProductData.productName,
                 productPrice: freshProductData.productPrice,
+                productId: freshProductData.productId,
               );
             },
           ).toList(),
@@ -141,19 +169,22 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: scaffoldBackgroundColor,
         drawer: DrawerSide(),
         appBar: AppBar(
+          backgroundColor: primaryColor,
           iconTheme: IconThemeData(
             color: textColor,
           ),
           title: Text('Home', style: TextStyle(color: textColor, fontSize: 17)),
           actions: [
             CircleAvatar(
-                radius: 12,
+                radius: 15,
                 backgroundColor: Color(0xffd4d181),
                 child: IconButton(
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => Search(),
+                        builder: (context) => Search(
+                          search: productProvider.getAllProductSearch,
+                        ),
                       ),
                     );
                   },
@@ -164,12 +195,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child:
-                  CircleAvatar(radius: 12, backgroundColor: Color(0xffd4d181)),
-            )
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: CircleAvatar(
+                  radius: 15,
+                  backgroundColor: Color(0xffd4d181),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ReviewCart(),
+                        ),
+                      );
+                    },
+                    icon: Icon(
+                      Icons.shop_outlined,
+                      size: 15,
+                      color: textColor,
+                    ),
+                  )),
+            ),
           ],
-          backgroundColor: Color(0xffd6b738),
         ),
         body: Padding(
             padding: const EdgeInsets.symmetric(
@@ -185,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: NetworkImage(
                         'https://t4.ftcdn.net/jpg/01/43/88/31/360_F_143883132_bn9n14k3aX10bq5HN18IYHPbx9YyiSEA.jpg'),
                   ),
-                  color: Colors.red,
+                  color: Colors.yellow[800],
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(children: [

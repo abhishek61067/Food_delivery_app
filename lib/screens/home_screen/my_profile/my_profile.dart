@@ -1,3 +1,5 @@
+//MyProfile is invoked when clickon on Myprofile listtile in drawer_side.dart
+
 import "package:flutter/material.dart";
 import 'package:food_del/config/colors.dart';
 import "package:food_del/screens/home_screen/drawer_side.dart";
@@ -54,40 +56,61 @@ class MyProfile extends StatelessWidget {
                           width: 250,
                           height: 80,
                           padding: EdgeInsets.only(left: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Abhishek Bhattarai",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: textColor,
-                                    ),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Abhishek Bhattarai",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: textColor,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SingleChildScrollView(
+                                            scrollDirection: Axis.horizontal,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "Abhishek.bhattarai61067@gmail.com",
+                                                  style: TextStyle(height: 2),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text("Abhishek.bhattarai@gmail.com"),
-                                ],
-                              ),
-                              CircleAvatar(
-                                radius: 15,
-                                backgroundColor: primaryColor,
-                                child: CircleAvatar(
-                                  radius: 12,
-                                  child: Icon(
-                                    Icons.edit,
-                                    color: primaryColor,
-                                  ),
-                                  backgroundColor: scaffoldBackgroundColor,
                                 ),
-                              ),
-                            ],
+                                CircleAvatar(
+                                  radius: 15,
+                                  backgroundColor: primaryColor,
+                                  child: CircleAvatar(
+                                    radius: 12,
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: primaryColor,
+                                    ),
+                                    backgroundColor: scaffoldBackgroundColor,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
