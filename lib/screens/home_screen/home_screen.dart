@@ -15,24 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // const HomeScreen({Key? key}) : super(key: key);
-  String bittergourd =
-      "https://www.pngkey.com/png/full/374-3749064_bitter-gourd-png-bitter-ground.png";
-
-  String cauli =
-      "https://toppng.com/uploads/preview/cauliflower-11528338421d3fh2ayvne.png";
-
-  String ladiesfinger =
-      "https://www.pngfind.com/pngs/m/35-358571_lady-finger-png-ladyfinger-png-transparent-png.png";
-
-  //for fruits
-  String strawberry =
-      "https://w7.pngwing.com/pngs/983/762/png-transparent-strawberry-fruit-strawberry-strawberry-clipart-thumbnail.png";
-
-  String dragonfruit =
-      "https://toppng.com/uploads/preview/dragon-fruit-11528341602mhzr5ojamx.png";
-
-  String pineapple =
-      "https://flyclipart.com/thumbs/pineapple-fruit-tropical-fruit-natural-foods-ananas-ananas-fruit-1119510.png";
 
   ProductProvider productProvider = new ProductProvider();
 
